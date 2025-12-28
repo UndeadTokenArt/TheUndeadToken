@@ -10,6 +10,7 @@ import (
 	"github.com/undeadtokenart/Homepage/internal/models"
 )
 
+// Client represents a connected WebSocket client
 type Client struct {
 	Conn   *websocket.Conn
 	UID    string
@@ -18,15 +19,18 @@ type Client struct {
 	SendCh chan []byte
 }
 
+// Hub manages all connected clients and broadcasts messages
 type Hub struct {
 	mu      sync.RWMutex
 	clients map[string]map[*Client]bool // group -> clients
 }
 
+// New creates a new Hub instance
 func New() *Hub {
 	return &Hub{clients: make(map[string]map[*Client]bool)}
 }
 
+// AddClient registers a new client to a group
 func (h *Hub) AddClient(group string, c *Client) {
 	h.mu.Lock()
 	defer h.mu.Unlock()
@@ -38,6 +42,7 @@ func (h *Hub) AddClient(group string, c *Client) {
 	m[c] = true
 }
 
+// RemoveClient unregisters a client from a group
 func (h *Hub) RemoveClient(group string, c *Client) {
 	h.mu.Lock()
 	defer h.mu.Unlock()
@@ -49,6 +54,7 @@ func (h *Hub) RemoveClient(group string, c *Client) {
 	}
 }
 
+// Outgoing represents a message sent to clients
 type Outgoing struct {
 	Type string      `json:"type"`
 	Data interface{} `json:"data"`

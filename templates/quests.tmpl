@@ -1,0 +1,122 @@
+<!-- this template will showcase the avaible quests on a quest board -->
+
+{{define "quests.tmpl"}}
+<style>
+    .bulletin-board {
+        background: linear-gradient(180deg,#8b5a2b 0%, #a86b3a 100%);
+        padding: 3rem;
+        border-radius: 8px;
+        box-shadow: 0 8px 30px rgba(0,0,0,.5) inset;
+        font-family: "Georgia", serif;
+        color: #222;
+    }
+    .board-title {
+        text-align:center;
+        color:#fff;
+        font-size:1.6rem;
+        margin-bottom:1rem;
+        text-shadow: 0 2px 0 rgba(0,0,0,.4);
+    }
+
+    .board-grid {
+        display:grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .quest-card {
+        background: #fff8ec;
+        padding: 1rem;
+        border-radius: 6px;
+        box-shadow: 0 6px 18px rgba(0,0,0,.25);
+        position: relative;
+        transform-origin: center;
+        transition: transform .12s ease, box-shadow .12s ease;
+        overflow: hidden;
+    }
+    /* give each "page" a slightly different tilt like pinned papers */
+    .board-grid .quest-card:nth-child(1){ transform: rotate(-3deg); }
+    .board-grid .quest-card:nth-child(2){ transform: rotate(2deg);  }
+    .board-grid .quest-card:nth-child(3){ transform: rotate(-1deg); }
+    .board-grid .quest-card:nth-child(4){ transform: rotate(3deg);  }
+
+    /* only show first 4 pages */
+    .board-grid .quest-card:nth-child(n+5){ display:none; }
+
+    .quest-pin {
+        width: 14px; height: 14px;
+        background: radial-gradient(circle at 30% 30%, #fff,#f2d2d2 30%, #a00 60%);
+        border-radius:50%;
+        position:absolute;
+        left:50%;
+        transform: translateX(-50%);
+        top:-7px;
+        box-shadow: 0 2px 6px rgba(0,0,0,.35);
+    }
+
+    .quest-title {
+        font-weight:700;
+        font-size:1.05rem;
+        margin-bottom:.25rem;
+    }
+    .quest-meta {
+        font-size:.85rem;
+        color:#6b4f2b;
+        margin-bottom:.5rem;
+    }
+    .quest-desc {
+        font-size:.95rem;
+        line-height:1.3;
+        color:#3b2f23;
+        max-height:7.5rem;
+        overflow:auto;
+    }
+    .quest-footer {
+        margin-top:.6rem;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        font-size:.9rem;
+    }
+    .reward {
+        background:#ffd97a;
+        padding:.2rem .5rem;
+        border-radius:4px;
+        color:#5a3300;
+        font-weight:600;
+    }
+    .empty-slot {
+        opacity:.6;
+        font-style:italic;
+        text-align:center;
+        padding:1.5rem 0;
+        color:#6b4f2b;
+    }
+</style>
+
+<div class="bulletin-board">
+    <div class="board-title">Quest Board</div>
+
+    {{if .Quests}}
+    <div class="board-grid">
+        {{range .Quests}}
+        <article class="quest-card" aria-label="quest">
+            <div class="quest-pin" aria-hidden="true"></div>
+            <div class="quest-title">{{.Title}}</div>
+            <div class="quest-meta">
+                {{with .Type}}{{.}}{{end}}{{if .Level}} • Level {{.Level}}{{end}}
+            </div>
+            <div class="quest-desc">{{.Description}}</div>
+            <div class="quest-footer">
+                <div class="quest-giver">{{with .Giver}}{{.}}{{else}}Unknown{{end}}</div>
+                <div class="reward">{{with .Reward}}{{.}}{{else}}—{{end}}</div>
+            </div>
+        </article>
+        {{end}}
+    </div>
+    {{else}}
+    <div class="empty-slot">No quests posted yet. Check back later or add a new posting.</div>
+    {{end}}
+</div>

@@ -14,12 +14,14 @@ import (
 	"github.com/undeadtokenart/Homepage/internal/store"
 )
 
+// Global variables
 var (
 	wsUpgrader = websocket.Upgrader{CheckOrigin: func(r *http.Request) bool { return true }}
 	st         = store.New()
 	hb         = hub.New()
 )
 
+// uidFromCookie retrieves the UID from the cookie or generates a new one
 func uidFromCookie(c *gin.Context) string {
 	if v, err := c.Cookie("uid"); err == nil && v != "" {
 		return v
@@ -29,7 +31,10 @@ func uidFromCookie(c *gin.Context) string {
 	return v
 }
 
+// registerRoutes sets up the HTTP routes for the Gin engine
 func registerRoutes(r *gin.Engine) {
+
+	// Homepage route
 	r.GET("/", func(c *gin.Context) {
 		// Load config data
 		homepage, err := ParseConfigFile("config.json")
@@ -45,10 +50,17 @@ func registerRoutes(r *gin.Engine) {
 		c.HTML(200, "index.tmpl", homepage)
 	})
 
+	// GM Tools route
 	r.GET("/gmTools", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "gmTools.tmpl", gin.H{})
 	})
 
+	// Quests route
+	r.GET("/quests", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "quests.tmpl", gin.H{})
+	})
+
+	// Join or create group route
 	r.POST("/join", func(c *gin.Context) {
 		uid := uidFromCookie(c)
 		code := strings.ToUpper(strings.TrimSpace(c.PostForm("code")))
@@ -62,6 +74,7 @@ func registerRoutes(r *gin.Engine) {
 		c.Redirect(http.StatusSeeOther, "/g/"+code)
 	})
 
+	// Group page route
 	r.GET("/g/:code", func(c *gin.Context) {
 		uid := uidFromCookie(c)
 		code := strings.ToUpper(c.Param("code"))
@@ -74,6 +87,7 @@ func registerRoutes(r *gin.Engine) {
 		c.HTML(http.StatusOK, "group.tmpl", gin.H{"Code": code, "IsDM": isDM})
 	})
 
+	// WebSocket route for real-time updates
 	r.GET("/ws/:code", func(c *gin.Context) {
 		uid := uidFromCookie(c)
 		code := strings.ToUpper(c.Param("code"))
@@ -106,7 +120,9 @@ func registerRoutes(r *gin.Engine) {
 			if err != nil {
 				break
 			}
+
 			// Minimal message router
+			// Expecting JSON messages with "type" and "data"
 			type Incoming struct {
 				Type string                 `json:"type"`
 				Data map[string]interface{} `json:"data"`
@@ -116,6 +132,8 @@ func registerRoutes(r *gin.Engine) {
 				continue
 			}
 			switch in.Type {
+
+			// Handle different message types
 			case "addPlayer":
 				name := strings.TrimSpace(getStr(in.Data, "name"))
 				init := getInt(in.Data, "initiative")
@@ -214,6 +232,7 @@ func registerRoutes(r *gin.Engine) {
 	})
 }
 
+// Helper functions to extract typed values from maps
 func getStr(m map[string]interface{}, k string) string {
 	if v, ok := m[k]; ok {
 		if s, ok := v.(string); ok {
@@ -222,6 +241,8 @@ func getStr(m map[string]interface{}, k string) string {
 	}
 	return ""
 }
+
+// getInt extracts an integer from a map, handling different possible types
 func getInt(m map[string]interface{}, k string) int {
 	if v, ok := m[k]; ok {
 		switch t := v.(type) {
@@ -235,6 +256,8 @@ func getInt(m map[string]interface{}, k string) int {
 	}
 	return 0
 }
+
+// getStringSlice extracts a slice of strings from a map
 func getStringSlice(m map[string]interface{}, k string) []string {
 	var out []string
 	if v, ok := m[k]; ok {

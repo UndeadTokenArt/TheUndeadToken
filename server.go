@@ -7,6 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// runServer initializes and starts the Gin web server
+// with routes, templates, and static file serving.
 func runServer() {
 	// Set Gin to release mode for production
 	gin.SetMode(gin.ReleaseMode)
