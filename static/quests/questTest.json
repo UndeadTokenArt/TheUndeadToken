@@ -1,0 +1,53 @@
+{
+    "quests": [
+        {
+            "name": "Titans Quest",
+            "description": "This is a test quest for demonstration purposes.",
+            "reward": "500 gold coins",
+            "Giver": "A Great guy.",
+            "level": 15,
+            "tags": [
+                "test",
+                "demo",
+                "beginner"
+            ]
+        },
+        {
+        "name": "Test Quest",
+        "description": "This is a test quest for demonstration purposes.",
+        "reward": "100 gold coins",
+        "Giver": "Charles McTrask",
+        "level": 1,
+        "tags": [
+            "test",
+            "demo",
+            "beginner"
+            ]
+        },
+        {
+        "name": "Advanced Test Quest",
+        "description": "This is an advanced test quest for experienced adventurers.",
+        "reward": "1000 gold coins and a rare item",
+        "Giver": "Elder Thorne",
+        "level": 10,
+        "tags": [
+            "test",
+            "advanced",
+            "challenge"
+            ]
+        },
+        {
+            "name": "Epic Test Quest",
+            "description": "This is an epic test quest for legendary heroes.",
+            "reward": "5000 gold coins and a legendary item",
+            "Giver": "King Arthus",
+            "level": 20,
+            "tags": [
+                "test",
+                "epic",
+                "legendary"
+            ]
+        }
+
+    ]
+}

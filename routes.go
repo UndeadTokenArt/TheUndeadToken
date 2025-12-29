@@ -10,6 +10,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 
+	"os"
+
 	"github.com/undeadtokenart/Homepage/internal/hub"
 	"github.com/undeadtokenart/Homepage/internal/store"
 )
@@ -26,6 +28,8 @@ func uidFromCookie(c *gin.Context) string {
 	if v, err := c.Cookie("uid"); err == nil && v != "" {
 		return v
 	}
+
+	// generate new UID based on timestamp
 	v := time.Now().Format("20060102150405.000000000")
 	c.SetCookie("uid", v, 86400*365, "/", "", false, true)
 	return v
@@ -57,7 +61,51 @@ func registerRoutes(r *gin.Engine) {
 
 	// Quests route
 	r.GET("/quests", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "quests.tmpl", gin.H{})
+		data, err := os.ReadFile("static/quests/questTest.json")
+		if err != nil {
+			log.Printf("Error reading quest file: %v", err)
+			c.HTML(http.StatusInternalServerError, "quests.tmpl", gin.H{"Quests": nil})
+			return
+		}
+
+		var qf struct {
+			Quests []struct {
+				Name        string   `json:"name"`
+				Description string   `json:"description"`
+				Reward      string   `json:"reward"`
+				Giver       string   `json:"Giver"`
+				Level       int      `json:"level"`
+				Tags        []string `json:"tags"`
+			} `json:"quests"`
+		}
+		if err := json.Unmarshal(data, &qf); err != nil {
+			log.Printf("Error unmarshaling quest JSON: %v", err)
+			c.HTML(http.StatusInternalServerError, "quests.tmpl", gin.H{"Quests": nil})
+			return
+		}
+
+		type questView struct {
+			Title       string
+			Name        string
+			Level       int
+			Description string
+			Giver       string
+			Reward      string
+		}
+
+		var questViews []questView
+		for _, q := range qf.Quests {
+			questViews = append(questViews, questView{
+				Title:       q.Name,
+				Name:        "Quest",
+				Level:       q.Level,
+				Description: q.Description,
+				Giver:       q.Giver,
+				Reward:      q.Reward,
+			})
+		}
+
+		c.HTML(http.StatusOK, "quests.tmpl", gin.H{"Quests": questViews})
 	})
 
 	// Join or create group route

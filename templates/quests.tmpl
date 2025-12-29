@@ -1,6 +1,5 @@
 <!-- this template will showcase the avaible quests on a quest board -->
-
-{{define "quests.tmpl"}}
+<html>
 <style>
     .bulletin-board {
         background: linear-gradient(180deg,#8b5a2b 0%, #a86b3a 100%);
@@ -106,7 +105,7 @@
             <div class="quest-pin" aria-hidden="true"></div>
             <div class="quest-title">{{.Title}}</div>
             <div class="quest-meta">
-                {{with .Type}}{{.}}{{end}}{{if .Level}} • Level {{.Level}}{{end}}
+                {{with .Name}}{{.}}{{end}}{{if .Level}} • Level {{.Level}}{{end}}
             </div>
             <div class="quest-desc">{{.Description}}</div>
             <div class="quest-footer">
@@ -120,3 +119,4 @@
     <div class="empty-slot">No quests posted yet. Check back later or add a new posting.</div>
     {{end}}
 </div>
+</html>
