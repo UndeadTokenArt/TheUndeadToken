@@ -36,7 +36,7 @@ To run the application in a Docker container:
    ```
 2. Run the Docker container:
    ```bash
-   docker run -p 8080:8080 homepage
+   docker run -d -p 127.0.0.1:8080:8080 homepage
    ```
 
 ## Usage
