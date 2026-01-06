@@ -1,6 +1,28 @@
+# Executables
 *.exe
-Homepage
-/static/gallery/
-.vscode
+
+# Archives
 *.tar
+
+# Build artifacts
 /builds
+
+# Static assets (e.g., gallery images)
+/static/gallery/
+
+# IDE configuration
+.vscode
+
+# Docker configuration
+docker-compose.yml
+
+# Documentation
+installationInstructions.MD
+
+# Configuration files
+.air.toml
+.env
+
+# Project-specific ignores
+Homepage
+main
