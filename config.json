@@ -12,11 +12,11 @@
   "profileImage": "static/gallery/profilephoto.png",
   "availableForWork": true,
   "aboutTitle": "About Me",
-  "aboutIntro": "I'm passionate about creating beautiful, functional websites and applications.I am father of three wonderful kids and a husband to a beautiful wife. I love spending time with my family, playing games, and exploring the great outdoors.",
+  "aboutIntro": "I am a systems-minded creator who blends software engineering, cryptography, and narrative design into cohesive, modular experiences. I architect extensible web applications, build clean REST APIs in Go, and approach every project with a methodical, analytical mindset. Outside of code, I design build D&D campaigns and puzzles layered with ciphers, and secrets that reward curiosity and deep exploration. My work reflects a balance of technical rigor, playful problem-solving, and a drive to build systems that teach, reveal, and evolve.",
   "aboutParagraphs": [
     "With over 3 years of experience in development, I specialize in creating responsive, user-friendly websites and web applications. My approach combines technical expertise with creative problem-solving to deliver exceptional results.",
     "I believe in writing clean, efficient code and staying up-to-date with the latest technologies and best practices in the industry. My goal is to create digital experiences that not only look great but also perform exceptionally well.",
-    "When I'm not coding, you can find me hiking, reading sci-fi novels, experimenting with new recipes in the kitchen, and playing games with my family."
+    "When I'm not coding, you can find me going on walks with my wife, watching Space documentaries on youtube, experimenting with new recipes in the kitchen, and playing games with my family."
   ],
   "skills": [
     "Go programming language",
@@ -26,7 +26,8 @@
     "VPS management",
     "HTML & CSS",
     "Docker Containers",
-    "SQL database"
+    "SQL database",
+    "Masterful DM"
   ],
   "experience": [
     {
