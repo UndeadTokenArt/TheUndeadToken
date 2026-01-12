@@ -3,8 +3,8 @@
   "metaDescription": "",
   "firstName": "Stephen",
   "lastName": "Moore",
-  "jobTitle": "Developer",
-  "tagline": "Web Developer and Systems Designer",
+  "jobTitle": "Web Developer",
+  "tagline": "- Systems Designer",
   "location": "Clackamas, OR",
   "email": "MooreStephenC@Gmail.com",
   "phone": "503-360-7678",
@@ -12,12 +12,11 @@
   "profileImage": "static/gallery/profilephoto.png",
   "availableForWork": true,
   "aboutTitle": "About Me",
-  "aboutIntro": "I am a systems-minded creator who blends software engineering, cryptography, and narrative design into cohesive, modular experiences. I make web applications, build clean REST APIs in Go, and approach every project with a methodical, analytical mindset. Outside of code, I design build D&D campaigns and puzzles layered with ciphers, and secrets that reward curiosity and deep exploration. My work reflects a balance of technical rigor, playful problem-solving, and a drive to build systems that teach, reveal, and evolve.",
+  "aboutIntro": "I create modular web apps, REST APIs in Go, and design intricate D&D campaigns blending cryptography and narrative.",
   "aboutParagraphs": [
     "I was a Garbage Man for over 2 decades before transitioning into tech. During that time, I developed a strong work ethic, attention to detail, and problem-solving skills that have served me well in my career as a developer.",
-    "With over 3 years of experience in technologies, I started my Education in 3D modeling and animation. My approach combines technical expertise with creative problem-solving.",
-    "I believe in writing clean, efficient code and staying up-to-date with the latest technologies and best practices in the industry. My goal is to create digital experiences that not only look great but also perform exceptionally well.",
-    "When I'm not coding, you can find me going on walks with my wife, watching Space documentaries on youtube, experimenting with new recipes in the kitchen, and playing games with my family."
+    "I started my education in 3D modeling and animation. My approach combines technical expertise with creative problem-solving.",
+    "When I'm not coding, I enjoy crafting immersive tabletop RPG campaigns, blending storytelling with game mechanics to create engaging experiences for players."
   ],
   "skills": [
     "Go programming language",
@@ -29,7 +28,7 @@
     "Docker Containers",
     "SQL database",
     "Masterful DMing",
-    "Blender 3D modeling",
+    "Blender 3D modeling"
   ],
   "experience": [
     {

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{.FirstName}} {{.LastName}} | {{.JobTitle}}</title>
-    
+
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
 
     <!-- Set the style sheet and scripts -->
@@ -12,6 +13,7 @@
     <script src="/static/js/homepageScript.js"></script>
 
 </head>
+
 <body class="parchment text-dark">
     <!-- Navigation -->
     <nav class="backdrop-blur-md fixed w-full z-50">
@@ -25,7 +27,8 @@
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-8 px-10">
                         {{range .NavItems}}
-                        <a href="{{.Href}}" class="nav-link decoration-none text-dark hover:text-blue px-3 py-2 rounded-md text-sm font-medium">{{.Text}}</a>
+                        <a href="{{.Href}}"
+                            class="nav-link decoration-none text-dark hover:text-blue px-3 py-2 rounded-md text-sm font-medium">{{.Text}}</a>
                         {{end}}
                     </div>
                 </div>
@@ -36,12 +39,13 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Mobile menu -->
         <div id="mobile-menu" class="hidden md:hidden parchment-dark border-t border-blue/10">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 {{range .NavItems}}
-                <a href="{{.Href}}" class="text-gray-300 hover:text-blue block px-3 py-2 rounded-md text-base font-medium">{{.Text}}</a>
+                <a href="{{.Href}}"
+                    class="text-gray-300 hover:text-blue block px-3 py-2 rounded-md text-base font-medium">{{.Text}}</a>
                 {{end}}
             </div>
         </div>
@@ -54,17 +58,19 @@
                 <h1 class="text-4xl md:text-6xl font-bold mb-4">
                     {{.FirstName}}<span class="gradient-text"> {{.LastName}}</span>
                 </h1>
-                <h2 class="text-2xl md:text-3xl font-semibold mb-6 text-gray-300">
+                <h2 class="text-2xl md:text-3xl font-semibold mb-6 text-gray-400">
                     {{.JobTitle}} <span class="text-dark">{{.Tagline}}</span>
                 </h2>
                 <p class="text-gray-400 mb-8 text-lg">
                     {{.HeroDescription}}
                 </p>
                 <div class="flex space-x-4">
-                    <a href="#projects" class="parchment-dark text-white hover:bg-blue/80 px-10 py-4 rounded-lg font-bold decoration-none transition duration-300">
+                    <a href="#projects"
+                        class="parchment-dark shadow-lg text-dark hover:bg-blue/80 px-10 py-4 rounded-lg font-bold decoration-none transition duration-300">
                         View My Work
                     </a>
-                    <a href="#contact" class="parchment-dark text-white hover:bg-blue/80 px-10 py-4 rounded-lg font-bold decoration-none transition duration-300">
+                    <a href="#contact"
+                        class="parchment-dark shadow-lg text-dark hover:bg-blue/80 px-10 py-4 rounded-lg font-bold decoration-none transition duration-300">
                         Contact Me
                     </a>
                 </div>
@@ -73,10 +79,10 @@
                 <div class="relative">
                     <div class="w-64 h-64 md:w-80 md:h-80 bg-blue/10 rounded-full flex items-center justify-center">
                         <div class="w-56 h-56 md:w-72 md:h-72 bg-blue/20 rounded-full flex items-center justify-center">
-                            <div class="w-48 h-48 md:w-64 md:h-64 bg-blue/30 rounded-full flex items-center justify-center overflow-hidden border-2 border-blue/40">
-                                <img src="{{.ProfileImage}}" 
-                                     alt="{{.FirstName}} {{.LastName}}" 
-                                     class="w-full h-full object-cover">
+                            <div
+                                class="w-48 h-48 md:w-64 md:h-64 bg-blue/30 rounded-full flex items-center justify-center overflow-hidden border-2 border-blue/40">
+                                <img src="{{.ProfileImage}}" alt="{{.FirstName}} {{.LastName}}"
+                                    class="w-full h-full object-cover">
                             </div>
                         </div>
                     </div>
@@ -95,8 +101,8 @@
                 {{.AboutIntro}}
             </p>
         </div>
-        
-        <div class="flex flex-col md:flex-row items-center">
+
+        <div class="flex flex-col md:flex-row gap-10">
             <div class="md:w-1/2 mb-10 md:mb-0 md:pr-10">
                 {{range .AboutParagraphs}}
                 <p class="text-dark mb-6">
@@ -105,14 +111,16 @@
                 {{end}}
             </div>
             <div class="md:w-1/2">
-                <h3 class="text-xl font-semibold mb-6 text-dark">My Skills</h3>
-                <div class="flex flex-wrap gap-3">
-                    {{range .Skills}}
-                    <span class="skill-pill parchment-darker text-dark px-4 py-2 rounded-full text-sm font-medium transition duration-300">{{.}}</span>
-                    {{end}}
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-dark">My Skills</h3>
+                    <div class=" flex flex-wrap gap-3">
+                        {{range .Skills}}
+                        <span
+                            class="skill-pill parchment-darkest text-dark px-4 py-2 rounded-full text-sm font-medium transition duration-300">{{.}}</span>
+                        {{end}}
+                    </div>
                 </div>
-                
-                <div class="mt-10">
+                <div class="p-6 mt-10">
                     <h3 class="text-xl font-semibold mb-6 text-dark">Experience</h3>
                     <div class="space-y-6">
                         {{range .Experience}}
@@ -138,20 +146,21 @@
                 Here are some of my recent projects. Each one was built with care and attention to detail.
             </p>
         </div>
-        
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {{range .Projects}}
             <!-- Project -->
-            <div class="project-card parchment-darkest rounded-xl overflow-hidden border border-blue/10 transition duration-300">
+            <div
+                class="project-card parchment-darkest rounded-xl overflow-hidden border border-blue/10 transition duration-300">
                 <div class="parchment-dark h-48 overflow-hidden">
-                    <img src="{{.Image}}" 
-                         alt="{{.Title}}" 
-                         class="h-full object-center hover:scale-105 transition duration-500">
+                    <img src="{{.Image}}" alt="{{.Title}}"
+                        class="h-full object-center hover:scale-105 transition duration-500">
                 </div>
                 <div class="p-6">
                     <div class="flex justify-between items-start mb-3">
                         <h3 class="text-xl font-bold">{{.Title}}</h3>
-                        <span class="text-xs parchment-dark shadow-lg text-blue px-4 py-4 rounded-lg">{{range $i, $tech := .Technologies}}{{if $i}}, {{end}}{{$tech}}{{end}}</span>
+                        <span class="text-xs parchment-dark shadow-lg text-blue px-4 py-4 rounded-lg">{{range $i, $tech
+                            := .Technologies}}{{if $i}}, {{end}}{{$tech}}{{end}}</span>
                     </div>
                     <p class="text-dark mb-4">
                         {{.Description}}
@@ -179,12 +188,12 @@
             </div>
             {{end}}
 
-        
-        <div class="parchment-dark shadow-lg px-4 py-4 mt-16 rounded-md">
-            <a href="#" class="items-center border text-dark hover:text-gray-400 rounded-lg font-medium">
-                View All Projects on GitHub 
-            </a>
-        </div>
+
+            <div class="parchment-dark shadow-lg px-4 py-4 mt-16 rounded-md">
+                <a href="#" class="items-center border text-dark hover:text-gray-400 rounded-lg font-medium">
+                    View All Projects on GitHub
+                </a>
+            </div>
     </section>
 
     <!-- Contact Section -->
@@ -197,14 +206,14 @@
                 Have a project in mind or want to discuss potential opportunities? I'd love to hear from you!
             </p>
         </div>
-        
+
         <div class="flex flex-col md:flex-row gap-10">
 
-            
+
             <div class="md:w-1/2">
                 <div class="parchment shadow-lg p-8 rounded-xl h-full border border-blue/10">
                     <h3 class="text-xl font-semibold mb-6 text-dark">Contact Information</h3>
-                    
+
                     <div class="space-y-6">
                         <div class="flex items-start">
                             <div class="flex-shrink-0 parchment-darkest p-3 rounded-lg text-blue">
@@ -216,7 +225,7 @@
                                 <p class="text-dark"><a href="mailto:{{.Email}}">{{.Email}}</a></p>
                             </div>
                         </div>
-                        
+
                         <div class="flex items-start">
                             <div class="flex-shrink-0 parchment-darkest p-3 rounded-lg text-blue">
                                 <img src="static/icons/phone.svg" alt="Phone Icon" class="w-10 h-10" />
@@ -227,7 +236,7 @@
                                 <p class="text-dark">{{.Phone}}</p>
                             </div>
                         </div>
-                        
+
                         <div class="flex items-start">
                             <div class="flex-shrink-0 parchment-darkest p-3 rounded-lg text-blue">
                                 <img src="static/icons/mappin.svg" alt="Map pin Icon" class="w-10 h-10" />
@@ -239,17 +248,19 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="mt-10">
                         <h3 class="text-xl font-semibold mb-6 text-dark">Follow Me</h3>
                         <div class="flex space-x-4">
-                            <a href="{{.SocialLinks.Github}}" class="w-10 h-10 p-3 parchment-darkest text-blue rounded-full transition duration-300">
+                            <a href="{{.SocialLinks.Github}}"
+                                class="w-10 h-10 p-3 parchment-darkest text-blue rounded-full transition duration-300">
                                 <i class="fab fa-github"></i>
-                                <img src="static/icons/github.svg" alt="github Icon" class="w-10 h-10"/>
+                                <img src="static/icons/github.svg" alt="github Icon" class="w-10 h-10" />
                             </a>
-                            <a href="{{.SocialLinks.LinkedIn}}" class="w-10 h-10 p-3 parchment-darkest text-blue rounded-full transition duration-300">
+                            <a href="{{.SocialLinks.LinkedIn}}"
+                                class="w-10 h-10 p-3 parchment-darkest text-blue rounded-full transition duration-300">
                                 <i class="fab fa-linkedin-in"></i>
-                                <img src="static/icons/linkedin.svg" alt="linkedin Icon" class="w-10 h-10"/>
+                                <img src="static/icons/linkedin.svg" alt="linkedin Icon" class="w-10 h-10" />
                             </a>
                         </div>
                     </div>
@@ -274,4 +285,5 @@
         </div>
     </footer>
 </body>
+
 </html>
