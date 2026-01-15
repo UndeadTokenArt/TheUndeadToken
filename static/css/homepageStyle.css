@@ -10,16 +10,16 @@
   --gray-400: #9ca3af;
   --white: #ffffff;
   --black: #000000;
-  --parchment: #f7f2e2;
-  --parchment-dark: #d2cec0;
-  --parchment-darker: ##7c7a74;
-  --parchment-darkest: #9d9c98;
   --text: #333333;
   --links: #7694a4;
   --buttons: #af874c;
   --buttons-hover: #d4b483;
   --border: #cfcfcf;
 
+  --parchment: #f7f2e2;
+  --parchment-dark: #d2cec0;
+  --parchment-darker: ##7c7a74;
+  --parchment-darkest: #9d9c98;
 }
 
 .border-gold {
