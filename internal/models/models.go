@@ -12,6 +12,9 @@ import (
 	"time"
 )
 
+
+
+
 type EntityType string
 
 const (
@@ -19,7 +22,6 @@ const (
 	Monster EntityType = "monster"
 )
 
-//
 
 type Entity struct {
 	ID         string     `json:"id"`

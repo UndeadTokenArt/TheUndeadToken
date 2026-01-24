@@ -9,7 +9,7 @@
   const ws = new WebSocket(`${location.protocol === 'https:' ? 'wss' : 'ws'}://${location.host}/ws/${ctx.code}`);
 
 
-  // Ping/pong keepalive
+  // Ping Pong keepalive
   let pingInterval = setInterval(() => {
     if (ws.readyState === 1) ws.send(JSON.stringify({ type: 'ping' }));
   }, 20000); // every 20 seconds
@@ -31,9 +31,21 @@
   function render(entries, turn) {
     list.innerHTML = '';
     entries.forEach((e, i) => {
+
+
       const li = document.createElement('li');
       li.className = `list-group-item bg-dark text-light d-flex justify-content-between align-items-center entity ${e.type}`;
       li.dataset.id = e.id;
+
+      // monster entities have colored border
+      if (e.type === 'monster') {
+        li.style.border = '2px solid rgba(0, 170, 170, 1)';
+        if (e.hp < e.maxHp / 4) {
+          li.style.borderColor = 'rgba(221, 34, 0, 0.8)';
+        } else if (e.hp < e.maxHp / 2) {
+          li.style.borderColor = 'rgba(170, 136, 0, 1)';
+        }
+      }
 
       const left = document.createElement('div');
       left.className = 'd-flex flex-column';
@@ -78,8 +90,10 @@
       right.className = 'd-flex align-items-center gap-2';
 
       // HP display for monsters
-      // Damage button for monsters (DM only)r45ree34eertgyy 5tv5t666666ytgyyyyyyyyyyyyyhgggyghhhtygtr5
+      // Damage button for monsters (DM only)
       if (e.type === 'monster' && ctx.isDM) {
+
+
         const hpWrap = document.createElement('div');
         hpWrap.style.minWidth = '120px';
         hpWrap.className = 'text-end';
