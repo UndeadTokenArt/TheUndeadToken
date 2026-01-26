@@ -14,7 +14,7 @@ RUN go mod download
 COPY . .
 
 # Build the application (static binary for Alpine)
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o main .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o app .
 
 # Use a smaller base image for the final stage
 FROM alpine:latest
@@ -26,7 +26,7 @@ RUN apk --no-cache add ca-certificates
 WORKDIR /root/
 
 # Copy the binary from the builder stage
-COPY --from=builder /app/main .
+COPY --from=builder /app/app .
 
 # Copy template and static files from the builder stage
 COPY --from=builder /app/templates ./templates
@@ -37,4 +37,4 @@ COPY --from=builder /app/config.json ./config.json
 EXPOSE 8080
 
 # Command to run the executable
-CMD ["./main"]
+CMD ["./app"]

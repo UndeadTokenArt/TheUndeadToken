@@ -42,7 +42,7 @@
     {
       "title": "This site",
       "description": "Personal portfolio site",
-      "image": "static/icons/feather/home.svg",
+      "image": "static/gallery/code.png",
       "technologies": [
         "GO",
         "Gin framework",
@@ -59,7 +59,7 @@
     {
       "title": "Game Master Tools",
       "description": "a feature rich web application for managing tabletop RPG campaigns",
-      "image": "static/icons/feather/users.svg",
+      "image": "static/gallery/gmtools.png",
       "technologies": [
         "GO",
         "Gin framework",

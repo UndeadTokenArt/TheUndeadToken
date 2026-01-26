@@ -26,3 +26,4 @@ installationInstructions.MD
 # Project-specific ignores
 Homepage
 main
+/tmp

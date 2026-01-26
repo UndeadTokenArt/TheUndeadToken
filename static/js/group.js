@@ -37,7 +37,7 @@
       li.className = `list-group-item bg-dark text-light d-flex justify-content-between align-items-center entity ${e.type}`;
       li.dataset.id = e.id;
 
-      // monster entities have colored border
+      // monster entities have colored border based on HP percentage
       if (e.type === 'monster') {
         li.style.border = '2px solid rgba(0, 170, 170, 1)';
         if (e.hp < e.maxHp / 4) {
