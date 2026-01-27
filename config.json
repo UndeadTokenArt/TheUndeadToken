@@ -69,6 +69,20 @@
       "projectURL": "/gmTools",
       "githubURL": "https://github.com/UndeadTokenArt/agentTracker",
       "liveURL": "https://www.undeadToken.com/gmTools"
+    },
+      {
+      "title": "True2you Jewelry",
+      "description": "A beautifully designed e-commerce site for a local jewerly store",
+      "image": "static/gallery/true2you.png",
+      "technologies": [
+        "GO",
+        "standard library http",
+        "Docker containers",
+        "JavaScript"
+      ],
+      "projectURL": "https://www.true2youjewelry.com/",
+      "githubURL": "https://github.com/UndeadTokenArt/true2u",
+      "liveURL": "https://www.true2youjewelry.com/"
     }
   ],
   "socialLinks": {
@@ -78,12 +92,12 @@
   },
   "navItems": [
     {
-      "text": "About Me",
-      "href": "#about"
-    },
-    {
       "text": "Projects",
       "href": "#projects"
+    },
+    {
+      "text": "About Me",
+      "href": "#about"
     },
     {
       "text": "Contact",

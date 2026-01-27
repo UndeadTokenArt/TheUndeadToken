@@ -52,7 +52,7 @@
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <section id="home" class="pt-32 pb-2 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div class="flex flex-col md:flex-row items-center justify-between">
             <div class="md:w-1/2 mb-10 md:mb-0">
                 <h1 class="text-4xl md:text-6xl font-bold mb-4">
@@ -92,7 +92,7 @@
     </section>
 
     <!-- Projects Section -->
-    <section id="projects" class="bg-parchment py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <section id="projects" class="bg-parchment pt-2 py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div class="text-center mb-16">
             <h2 class="text-3xl md:text-4xl font-bold mb-4">
                 <span class="border-b-2 border-blue pb-2">My Projects</span>
@@ -154,9 +154,9 @@
 
     <!-- About Section -->
     <section id="about" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto parchment-dark border-gold rounded-xl my-10 shadow-lg">
-        <div class="text-center mb-16">
+        <div class="text-center border-gold parchment rounded-xl mb-16">
             <h2 class="text-3xl md:text-4xl font-bold mb-4">
-                <span class="pb-2">{{.AboutTitle}}</span>
+                <span class="border-b-2 border-blue pb-2">{{.AboutTitle}}</span>
             </h2>
             <p class="text-dark max-w-3xl mx-auto">
                 {{.AboutIntro}}
@@ -172,7 +172,7 @@
                 {{end}}
             </div>
             <div class="md:w-1/2">
-                <div class="p-6">
+                <div class="parchment shadow-lg rounded-xl p-6 border-gold">
                     <h3 class="text-xl font-semibold text-dark">My Skills</h3>
                     <div class=" flex flex-wrap gap-3">
                         {{range .Skills}}
@@ -181,7 +181,7 @@
                         {{end}}
                     </div>
                 </div>
-                <div class="p-6 mt-10">
+                <div class="parchment shadow-lg rounded-xl p-6 mt-10 border-gold">
                     <h3 class="text-xl font-semibold mb-6 text-dark">Experience</h3>
                     <div class="space-y-6">
                         {{range .Experience}}
@@ -198,7 +198,7 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto parchment-dark rounded-xl my-10">
+    <section id="contact" class="py-10 px-2 sm:px-6 lg:px-8 max-w-7xl mx-auto parchment-dark rounded-xl my-10 overflow-hidden">
         <div class="parchment shadow-lg rounded-lg p-6 text-center mb-16 border-gold">
             <h2 class="md:text-4xl font-bold mb-4">
                 <span class="border-b-2 border-blue pb-2">Get In Touch</span>
@@ -209,12 +209,9 @@
         </div>
 
         <div class="flex flex-col md:flex-row gap-10">
-
-
             <div class="md:w-1/2">
-                <div class="parchment shadow-lg p-8 rounded-xl h-full border-gold">
+                <div class="parchment shadow-lg py-10 px-10 rounded-xl h-full border-gold">
                     <h3 class="text-xl font-semibold mb-6 text-dark">Contact Information</h3>
-
                     <div class="space-y-6">
                         <div class="flex items-start">
                             <div class="flex-shrink-0 parchment-darkest p-3 rounded-lg text-blue">
@@ -226,18 +223,6 @@
                                 <p class="text-dark"><a href="mailto:{{.Email}}">{{.Email}}</a></p>
                             </div>
                         </div>
-
-                        <!-- <div class="flex items-start">
-                            <div class="flex-shrink-0 parchment-darkest p-3 rounded-lg text-blue">
-                                <img src="static/icons/phone.svg" alt="Phone Icon" class="w-10 h-10" />
-                                <i class="fas fa-phone-alt text-lg"></i>
-                            </div>
-                            <div class="ml-4">
-                                <h4 class="text-sm font-medium text-dark">Phone</h4>
-                                <p class="text-dark">{{.Phone}}</p>
-                            </div>
-                        </div> -->
-
                         <div class="flex items-start">
                             <div class="flex-shrink-0 parchment-darkest p-3 rounded-lg text-blue">
                                 <img src="static/icons/mappin.svg" alt="Map pin Icon" class="w-10 h-10" />
@@ -252,7 +237,7 @@
 
                     <div class="mt-10">
                         <h3 class="text-xl font-semibold mb-6 text-dark">Follow Me</h3>
-                        <div class="flex space-x-4">
+                        <div class="flex">
                             <a href="{{.SocialLinks.Github}}"
                                 class="w-10 h-10 p-3 parchment-darkest text-blue rounded-full transition duration-300">
                                 <i class="fab fa-github"></i>
