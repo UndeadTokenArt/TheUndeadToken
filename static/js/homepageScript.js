@@ -1,57 +1,52 @@
-tailwind.config = {
-  theme: {
-    extend: {
-      colors: {
-        dark: "#333333ff",
-        darker: "#131313ff",
-        orange: "#ec9728ff",
-        blue: "#64a0ffff",
-        green: "#22c55e",
-      },
-    },
-  },
-};
-
-
 document.addEventListener("DOMContentLoaded", function() {
-            // Mobile menu toggle
-        document.getElementById('mobile-menu-button').addEventListener('click', function() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        });
+    const body = document.body;
+    const overlay = document.getElementById("sidebar-overlay");
+    const toggle = document.getElementById("sidebar-toggle");
 
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    // Close mobile menu if open
-                    const mobileMenu = document.getElementById('mobile-menu');
-                    if (!mobileMenu.classList.contains('hidden')) {
-                        mobileMenu.classList.add('hidden');
-                    }
-                    
-                    // Scroll to target
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
+    function closeSidebar() {
+        body.classList.add("sidebar-collapsed");
+    }
 
-        // Add shadow to navbar on scroll
-        window.addEventListener('scroll', function() {
-            const nav = document.querySelector('nav');
-            if (window.scrollY > 10) {
-                nav.classList.add('shadow-lg');
-            } else {
-                nav.classList.remove('shadow-lg');
+    function openSidebar() {
+        body.classList.remove("sidebar-collapsed");
+    }
+
+    toggle.addEventListener("click", function() {
+        body.classList.toggle("sidebar-collapsed");
+    });
+
+    overlay.addEventListener("click", closeSidebar);
+
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+        anchor.addEventListener("click", function(e) {
+            const targetId = this.getAttribute("href");
+            if (targetId === "#") {
+                return;
+            }
+
+            const targetElement = document.querySelector(targetId);
+            if (!targetElement) {
+                return;
+            }
+
+            e.preventDefault();
+            targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
+
+            if (window.innerWidth <= 960) {
+                closeSidebar();
             }
         });
+    });
+
+    window.addEventListener("resize", function() {
+        if (window.innerWidth > 960) {
+            openSidebar();
+        }
+    });
+
+    if (window.innerWidth <= 960) {
+        closeSidebar();
+    } else {
+        openSidebar();
+    }
 });

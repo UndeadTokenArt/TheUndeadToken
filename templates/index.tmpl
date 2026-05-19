@@ -5,271 +5,139 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{.FirstName}} {{.LastName}} | {{.JobTitle}}</title>
-
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-
-    <!-- Set the style sheet and scripts -->
     <link rel="stylesheet" href="/static/css/homepageStyle.css">
     <script src="/static/js/homepageScript.js"></script>
-
 </head>
 
-<body class="parchment text-dark">
-    <!-- Navigation -->
-    <nav class="backdrop-blur-md fixed w-full z-50 border-b-2 border-color-blue">
-        <div class="x-auto">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <span class="text-dark text-2xl font-bold">Undead<span class="text-gray-400">Token</span></span>
-                    </div>
-                </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-8 px-10">
-                        {{range .NavItems}}
-                        <a href="{{.Href}}"
-                            class="nav-link decoration-none text-dark hover:text-blue px-3 py-2 rounded-md text-sm font-medium">{{.Text}}</a>
-                        {{end}}
-                    </div>
-                </div>
-                <div class="md:hidden">
-                    <button id="mobile-menu-button" class="text-gray-300 hover:text-blue focus:outline-none">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
+<body class="parchment text-dark rustic-body">
+    <button id="sidebar-toggle" class="rustic-toggle" aria-label="Toggle sidebar">Menu</button>
+    <div id="sidebar-overlay" class="rustic-overlay"></div>
 
-        <!-- Mobile menu -->
-        <div id="mobile-menu" class="hidden md:hidden parchment-dark border-t border-blue/10">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                {{range .NavItems}}
-                <a href="{{.Href}}"
-                    class="text-gray-300 hover:text-blue block px-3 py-2 rounded-md text-base font-medium">{{.Text}}</a>
-                {{end}}
-            </div>
+    <aside id="site-sidebar" class="rustic-sidebar">
+        <div>
+            <h1 class="rustic-brand">{{.FirstName}} <span>{{.LastName}}</span></h1>
+            <p class="rustic-subtitle">{{.JobTitle}}</p>
+            <p class="rustic-small">{{.Tagline}}</p>
         </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="pt-32 pb-2 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div class="flex flex-col md:flex-row items-center justify-between">
-            <div class="md:w-1/2 mb-10 md:mb-0">
-                <h1 class="text-4xl md:text-6xl font-bold mb-4">
-                    {{.FirstName}}<span class="gradient-text"> {{.LastName}}</span>
-                </h1>
-                <h2 class="text-2xl md:text-3xl font-semibold mb-6 text-gray-400">
-                    {{.JobTitle}} <span class="text-dark">{{.Tagline}}</span>
-                </h2>
-                <p class="text-gray-400 mb-8 text-lg">
-                    {{.HeroDescription}}
-                </p>
-                <div class="flex space-x-4">
-                    <a href="#projects"
-                        class="parchment-dark shadow-lg text-dark hover:bg-blue/80 px-10 py-4 rounded-lg font-bold decoration-none transition duration-300">
-                        View My Work
-                    </a>
-                    <a href="#contact"
-                        class="parchment-dark shadow-lg text-dark hover:bg-blue/80 px-10 py-4 rounded-lg font-bold decoration-none transition duration-300">
-                        Contact Me
-                    </a>
-                </div>
-            </div>
-            <div class="md:w-1/2 flex justify-center">
-                <div class="relative">
-                    <div class="border-gold w-64 h-64 md:w-80 md:h-80 bg-blue/10 rounded-full flex items-center justify-center">
-                        <div class="w-56 h-56 md:w-72 md:h-72 bg-blue/20 rounded-full flex items-center justify-center">
-                            <div
-                                class="w-48 h-48 md:w-64 md:h-64 bg-blue/30 rounded-full flex items-center justify-center overflow-hidden border-2 border-blue/40">
-                                <img src="{{.ProfileImage}}" alt="{{.FirstName}} {{.LastName}}"
-                                    class="w-full h-full object-cover">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="bg-parchment pt-2 py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold mb-4">
-                <span class="border-b-2 border-blue pb-2">My Projects</span>
-            </h2>
-            <p class="text-dark max-w-3xl mx-auto">
-                Here are some of my recent projects. Each one was built with care and attention to detail.
-            </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {{range .Projects}}
-            <!-- Project -->
-            <div
-                class="project-card parchment-darkest rounded-xl overflow-hidden border border-blue/10 transition duration-300">
-                <div class="parchment-dark h-48 overflow-hidden">
-                    <a href={{.ProjectURL}}>
-                        <img src="{{.Image}}" alt="{{.Title}}" class="w-full hover:scale-105 transition duration-500">
-                    </a>
-                </div>
-                <div class="p-6">
-                    <div class="flex justify-between items-start mb-3">
-                        <h3 class="text-xl font-bold">{{.Title}}</h3>
-                        <span class="text-xs parchment-dark shadow-lg text-blue px-4 py-4 rounded-lg">{{range $i, $tech
-                            := .Technologies}}{{if $i}}, {{end}}{{$tech}}{{end}}</span>
-                    </div>
-                    <p class="text-dark mb-4">
-                        {{.Description}}
-                    </p>
-                    <div class="flex justify-between items-center">
-                        {{if .ProjectURL}}
-                        <a href="{{.ProjectURL}}" class="text-blue hover:text-blue/80 font-medium flex items-center">
-                            View Project <i class="fas fa-arrow-right ml-2"></i>
-                        </a>
-                        {{end}}
-                        <div class="flex space-x-2">
-                            {{if .GithubURL}}
-                            <a href="{{.GithubURL}}" class="text-dark hover:text-blue">
-                                <i class="fab fa-github"></i>
-                            </a>
-                            {{end}}
-                            {{if .LiveURL}}
-                            <a href="{{.LiveURL}}" class="text-dark hover:text-blue">
-                                <i class="fas fa-external-link-alt"></i>
-                            </a>
-                            {{end}}
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <nav class="rustic-nav">
+            {{range .NavItems}}
+            <a href="{{.Href}}" class="rustic-nav-link">{{.Text}}</a>
             {{end}}
-
-
-            <div class="parchment-dark shadow-lg px-4 py-4 mt-16 rounded-md">
-                <a href="#" class="items-center border text-dark hover:text-gray-400 rounded-lg font-medium">
-                    View All Projects on GitHub
-                </a>
-            </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto parchment-dark border-gold rounded-xl my-10 shadow-lg">
-        <div class="text-center border-gold parchment rounded-xl mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold mb-4">
-                <span class="border-b-2 border-blue pb-2">{{.AboutTitle}}</span>
-            </h2>
-            <p class="text-dark max-w-3xl mx-auto">
-                {{.AboutIntro}}
-            </p>
+        </nav>
+        <div class="rustic-sidebar-footer">
+            <p class="rustic-small">{{.Location}}</p>
+            <a href="mailto:{{.Email}}" class="rustic-link">{{.Email}}</a>
         </div>
+    </aside>
 
-        <div class="flex flex-col md:flex-row gap-10">
-            <div class="md:w-1/2 mb-10 md:mb-0 md:pr-10">
-                {{range .AboutParagraphs}}
-                <p class="text-dark mb-6">
-                    {{.}}
-                </p>
+    <main id="site-main" class="rustic-main">
+        <section id="home" class="rustic-panel rustic-hero">
+            <div>
+                <p class="rustic-kicker">Builder / Creator</p>
+                <h2 class="rustic-hero-title">{{.FirstName}} <span class="gradient-text">{{.LastName}}</span></h2>
+                <p class="rustic-intro">{{.HeroDescription}}</p>
+                <div class="rustic-actions">
+                    <a href="#projects" class="rustic-button">View My Work</a>
+                    <a href="#contact" class="rustic-button rustic-button-ghost">Contact Me</a>
+                </div>
+            </div>
+            <div class="rustic-avatar-wrap">
+                <div class="rustic-avatar-frame">
+                    <img src="{{.ProfileImage}}" alt="{{.FirstName}} {{.LastName}}" class="rustic-avatar-image">
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="rustic-panel">
+            <div class="rustic-section-head">
+                <h3 class="rustic-section-title">Projects</h3>
+                <p class="rustic-small">Work built with practical curiosity and craft.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {{range .Projects}}
+                <article class="rustic-card project-card">
+                    <a href="{{.ProjectURL}}" class="rustic-card-media">
+                        <img src="{{.Image}}" alt="{{.Title}}" class="w-full h-full object-cover">
+                    </a>
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold mb-3">{{.Title}}</h4>
+                        <p class="rustic-small mb-4">{{.Description}}</p>
+                        <p class="rustic-tech mb-4">{{range $i, $tech := .Technologies}}{{if $i}} • {{end}}{{$tech}}{{end}}</p>
+                        <div class="flex justify-between items-center">
+                            {{if .ProjectURL}}
+                            <a href="{{.ProjectURL}}" class="rustic-link">View Project</a>
+                            {{end}}
+                            <div class="flex space-x-2">
+                                {{if .GithubURL}}
+                                <a href="{{.GithubURL}}" class="rustic-icon-link">GitHub</a>
+                                {{end}}
+                                {{if .LiveURL}}
+                                <a href="{{.LiveURL}}" class="rustic-icon-link">Live</a>
+                                {{end}}
+                            </div>
+                        </div>
+                    </div>
+                </article>
                 {{end}}
             </div>
-            <div class="md:w-1/2">
-                <div class="parchment shadow-lg rounded-xl p-6 border-gold">
-                    <h3 class="text-xl font-semibold text-dark">My Skills</h3>
-                    <div class=" flex flex-wrap gap-3">
-                        {{range .Skills}}
-                        <span
-                            class="skill-pill parchment-darkest text-dark px-4 py-2 rounded-full text-sm font-medium transition duration-300">{{.}}</span>
-                        {{end}}
-                    </div>
-                </div>
-                <div class="parchment shadow-lg rounded-xl p-6 mt-10 border-gold">
-                    <h3 class="text-xl font-semibold mb-6 text-dark">Experience</h3>
-                    <div class="space-y-6">
-                        {{range .Experience}}
-                        <div class="border-l-2 border-blue pl-4">
-                            <h4 class="font-medium text-lg">{{.Title}}</h4>
-                            <p class="text-dark text-sm">{{.Company}} • {{.Year}}</p>
-                            <p class="text-dark mt-2">{{.Description}}</p>
-                        </div>
-                        {{end}}
-                    </div>
-                </div>
+        </section>
+
+        <section id="about" class="rustic-panel">
+            <div class="rustic-section-head">
+                <h3 class="rustic-section-title">{{.AboutTitle}}</h3>
+                <p class="rustic-small">{{.AboutIntro}}</p>
             </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-10 px-2 sm:px-6 lg:px-8 max-w-7xl mx-auto parchment-dark rounded-xl my-10 overflow-hidden">
-        <div class="parchment shadow-lg rounded-lg p-6 text-center mb-16 border-gold">
-            <h2 class="md:text-4xl font-bold mb-4">
-                <span class="border-b-2 border-blue pb-2">Get In Touch</span>
-            </h2>
-            <p class="text-dark max-w-3xl mx-auto">
-                Have a project in mind or want to discuss potential opportunities? I'd love to hear from you!
-            </p>
-        </div>
-
-        <div class="flex flex-col md:flex-row gap-10">
-            <div class="md:w-1/2">
-                <div class="parchment shadow-lg py-10 px-10 rounded-xl h-full border-gold">
-                    <h3 class="text-xl font-semibold mb-6 text-dark">Contact Information</h3>
-                    <div class="space-y-6">
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0 parchment-darkest p-3 rounded-lg text-blue">
-                                <img src="static/icons/mail.svg" alt="Email Icon" class="w-10 h-10" />
-                                <i class="fas fa-envelope text-lg"></i>
-                            </div>
-                            <div class="ml-4">
-                                <h4 class="text-sm font-medium text-dark">Email</h4>
-                                <p class="text-dark"><a href="mailto:{{.Email}}">{{.Email}}</a></p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0 parchment-darkest p-3 rounded-lg text-blue">
-                                <img src="static/icons/mappin.svg" alt="Map pin Icon" class="w-10 h-10" />
-                                <i class="fas fa-map-marker-alt text-lg"></i>
-                            </div>
-                            <div class="ml-4">
-                                <h4 class="text-sm font-medium text-dark">Location</h4>
-                                <p class="text-dark">{{.Location}}</p>
-                            </div>
+            <div class="flex flex-col md:flex-row gap-10">
+                <div class="md:w-1/2">
+                    {{range .AboutParagraphs}}
+                    <p class="rustic-body-copy">{{.}}</p>
+                    {{end}}
+                </div>
+                <div class="md:w-1/2">
+                    <div class="rustic-card p-6 mb-8">
+                        <h4 class="text-xl font-semibold mb-4">Skills</h4>
+                        <div class="flex flex-wrap gap-3">
+                            {{range .Skills}}
+                            <span class="rustic-chip">{{.}}</span>
+                            {{end}}
                         </div>
                     </div>
-
-                    <div class="mt-10">
-                        <h3 class="text-xl font-semibold mb-6 text-dark">Follow Me</h3>
-                        <div class="flex">
-                            <a href="{{.SocialLinks.Github}}"
-                                class="w-10 h-10 p-3 parchment-darkest text-blue rounded-full transition duration-300">
-                                <i class="fab fa-github"></i>
-                                <img src="static/icons/github.svg" alt="github Icon" class="w-10 h-10" />
-                            </a>
-                            <a href="{{.SocialLinks.LinkedIn}}"
-                                class="w-10 h-10 p-3 parchment-darkest text-blue rounded-full transition duration-300">
-                                <i class="fab fa-linkedin-in"></i>
-                                <img src="static/icons/linkedin.svg" alt="linkedin Icon" class="w-10 h-10" />
-                            </a>
+                    <div class="rustic-card p-6">
+                        <h4 class="text-xl font-semibold mb-4">Experience</h4>
+                        <div class="space-y-6">
+                            {{range .Experience}}
+                            <div class="rustic-timeline-item">
+                                <h5 class="font-medium text-lg">{{.Title}}</h5>
+                                <p class="rustic-small">{{.Company}} • {{.Year}}</p>
+                                <p class="rustic-small">{{.Description}}</p>
+                            </div>
+                            {{end}}
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Footer -->
-    <footer class="parchment-dark py-10 border-t border-blue/10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-6 md:mb-0">
-                    <span class="text-dark text-2xl font-bold">Undead<span class="text-white">Token</span></span>
-                </div>
-                <div class="flex flex-col items-center md:items-end">
-                    <p class="text-dark text-sm mb-2">
-                        © 2026 Stephen Moore. All rights reserved.
-                    </p>
+        <section id="contact" class="rustic-panel">
+            <div class="rustic-section-head">
+                <h3 class="rustic-section-title">Get In Touch</h3>
+                <p class="rustic-small">Have a project in mind or want to discuss opportunities?</p>
+            </div>
+            <div class="rustic-card p-8">
+                <p class="rustic-body-copy"><strong>Email:</strong> <a href="mailto:{{.Email}}" class="rustic-link">{{.Email}}</a></p>
+                <p class="rustic-body-copy"><strong>Location:</strong> {{.Location}}</p>
+                <div class="rustic-actions">
+                    <a href="{{.SocialLinks.Github}}" class="rustic-button rustic-button-ghost">GitHub</a>
+                    <a href="{{.SocialLinks.LinkedIn}}" class="rustic-button rustic-button-ghost">LinkedIn</a>
                 </div>
             </div>
-        </div>
-    </footer>
+        </section>
+
+        <footer class="rustic-footer">
+            <p>UndeadToken</p>
+            <p>© 2026 Stephen Moore. All rights reserved.</p>
+        </footer>
+    </main>
 </body>
 
 </html>

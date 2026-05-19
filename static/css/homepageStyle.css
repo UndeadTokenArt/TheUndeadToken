@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Alegreya:wght@400;500;700&family=IM+Fell+English:ital@0;1&display=swap");
 
 /* Color variables */
 :root {
@@ -177,7 +177,7 @@
 }
 
 body {
-  font-family: "Inter", sans-serif;
+  font-family: "Alegreya", serif;
   background-color: var(--parchment);
   color: var(--gray-300);
   scroll-behavior: smooth;
@@ -830,4 +830,313 @@ body {
 
 .decoration-none {
   text-decoration: none;
+}
+
+/* Rustic layout */
+.rustic-body {
+  background:
+    radial-gradient(circle at 15% 10%, rgba(230, 139, 52, 0.16), transparent 35%),
+    radial-gradient(circle at 80% 0%, rgba(141, 127, 125, 0.18), transparent 40%),
+    linear-gradient(160deg, #120d0a 0%, #221812 40%, #120d0a 100%);
+}
+
+.rustic-toggle {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 70;
+  border: 1px solid rgba(230, 139, 52, 0.4);
+  border-radius: 9999px;
+  background-color: rgba(18, 13, 10, 0.86);
+  color: #e68b34;
+  padding: 0.45rem 0.95rem;
+  cursor: pointer;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.rustic-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(18, 13, 10, 0.55);
+  z-index: 55;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+}
+
+.rustic-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 265px;
+  height: 100vh;
+  z-index: 60;
+  box-sizing: border-box;
+  border-right: 1px solid rgba(230, 139, 52, 0.35);
+  background:
+    linear-gradient(180deg, rgba(80, 66, 53, 0.7) 0%, rgba(18, 13, 10, 0.92) 100%),
+    repeating-linear-gradient(45deg, rgba(141, 127, 125, 0.08) 0, rgba(141, 127, 125, 0.08) 8px, transparent 8px, transparent 16px);
+  padding: 4.75rem 1.3rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transform: translateX(0);
+  transition: transform 240ms ease;
+}
+
+.rustic-main {
+  margin-left: 265px;
+  padding: 2rem;
+  transition: margin-left 240ms ease;
+}
+
+.sidebar-collapsed .rustic-sidebar {
+  transform: translateX(-100%);
+}
+
+.sidebar-collapsed .rustic-main {
+  margin-left: 0;
+}
+
+.sidebar-collapsed .rustic-overlay {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rustic-brand {
+  margin: 0;
+  color: #d5c9c6;
+  font-family: "IM Fell English", serif;
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+.rustic-brand span {
+  color: #e68b34;
+}
+
+.rustic-subtitle {
+  color: #b7a8a5;
+  margin: 0.8rem 0 0.2rem;
+}
+
+.rustic-small {
+  color: #b7a8a5;
+  line-height: 1.55;
+}
+
+.rustic-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+.rustic-nav-link {
+  color: #d5c9c6;
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  padding: 0.5rem 0.7rem;
+  transition: all 180ms ease;
+}
+
+.rustic-nav-link:hover {
+  color: #e68b34;
+  border-left-color: #e68b34;
+  background-color: rgba(230, 139, 52, 0.08);
+}
+
+.rustic-sidebar-footer {
+  border-top: 1px dashed rgba(141, 127, 125, 0.45);
+  padding-top: 1rem;
+}
+
+.rustic-panel {
+  background:
+    linear-gradient(150deg, rgba(80, 66, 53, 0.4), rgba(18, 13, 10, 0.55));
+  border: 1px solid rgba(230, 139, 52, 0.25);
+  border-radius: 14px;
+  margin-bottom: 1.25rem;
+  padding: 2rem;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+}
+
+.rustic-hero {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+.rustic-kicker {
+  color: #c56731;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  font-size: 0.82rem;
+}
+
+.rustic-hero-title {
+  font-family: "IM Fell English", serif;
+  font-size: clamp(2rem, 4vw, 3.6rem);
+  margin: 0.5rem 0 1rem;
+}
+
+.rustic-intro {
+  max-width: 48ch;
+  color: #d5c9c6;
+}
+
+.rustic-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.rustic-button {
+  text-decoration: none;
+  padding: 0.62rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #c56731;
+  background-color: #c56731;
+  color: #120d0a;
+  font-weight: 700;
+}
+
+.rustic-button:hover {
+  background-color: #e68b34;
+  border-color: #e68b34;
+}
+
+.rustic-button-ghost {
+  background-color: transparent;
+  color: #d5c9c6;
+}
+
+.rustic-button-ghost:hover {
+  color: #120d0a;
+}
+
+.rustic-avatar-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.rustic-avatar-frame {
+  width: 176px;
+  height: 176px;
+  border-radius: 50%;
+  border: 3px solid rgba(230, 139, 52, 0.6);
+  padding: 0.35rem;
+  background: radial-gradient(circle at 30% 20%, rgba(230, 139, 52, 0.28), rgba(80, 66, 53, 0.6));
+}
+
+.rustic-avatar-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.rustic-section-head {
+  margin-bottom: 1.2rem;
+}
+
+.rustic-section-title {
+  font-family: "IM Fell English", serif;
+  font-size: 2rem;
+  margin: 0;
+}
+
+.rustic-card {
+  background: linear-gradient(160deg, rgba(18, 13, 10, 0.6), rgba(80, 66, 53, 0.45));
+  border: 1px solid rgba(141, 127, 125, 0.4);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.rustic-card-media {
+  display: block;
+  height: 12rem;
+}
+
+.rustic-tech {
+  color: #e68b34;
+  font-size: 0.88rem;
+}
+
+.rustic-link {
+  color: #e68b34;
+  text-decoration: none;
+}
+
+.rustic-link:hover {
+  color: #c56731;
+}
+
+.rustic-icon-link {
+  color: #d5c9c6;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.rustic-icon-link:hover {
+  color: #e68b34;
+}
+
+.rustic-body-copy {
+  color: #d5c9c6;
+  line-height: 1.65;
+  margin-bottom: 1rem;
+}
+
+.rustic-chip {
+  border: 1px solid rgba(230, 139, 52, 0.4);
+  background-color: rgba(80, 66, 53, 0.55);
+  color: #d5c9c6;
+  border-radius: 9999px;
+  padding: 0.3rem 0.8rem;
+}
+
+.rustic-timeline-item {
+  border-left: 2px solid #c56731;
+  padding-left: 0.8rem;
+}
+
+.rustic-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: #b7a8a5;
+  padding: 1rem 0.3rem 0.1rem;
+}
+
+@media (max-width: 960px) {
+  .rustic-main {
+    margin-left: 0;
+    padding: 4.2rem 1rem 1rem;
+  }
+
+  .rustic-sidebar {
+    transform: translateX(-100%);
+  }
+
+  body:not(.sidebar-collapsed) .rustic-sidebar {
+    transform: translateX(0);
+  }
+
+  .rustic-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar-collapsed .rustic-overlay {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  body:not(.sidebar-collapsed) .rustic-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
