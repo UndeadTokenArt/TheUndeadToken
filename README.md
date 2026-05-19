@@ -36,8 +36,33 @@ To run the application in a Docker container:
    ```
 2. Run the Docker container:
    ```bash
-   docker run -d -p 127.0.0.1:8080:8080 homepage
+   docker run -d -p 127.0.0.1:8080:8080 -e STORE_FILE=/groups/state.json -v $(pwd)/groups:/groups homepage
    ```
+
+#### Docker Compose (Optional)
+To run the application using Docker Compose:
+```bash
+docker-compose up -d
+```
+
+### Persistent Group Data
+- Group state is now persisted to disk after each successful update.
+- Default local file path: `groups/state.json`
+- Override with environment variable: `STORE_FILE=/path/to/state.json`
+- In Docker, use a mounted volume and set `STORE_FILE` to a path in that volume (for example `/groups/state.json`).
+
+**OR** , if you prefer to use a local file without Docker:
+```bash
+export STORE_FILE=/path/to/state.json
+```
+
+Make the target directory writable by the runtime user.
+```bash
+sudo chown -R $USER:$USER /home/zelek/workspace/Homepage/groups
+chmod 775 /home/zelek/workspace/Homepage/groups
+
+go run main.go
+```   
 
 ## Usage
 - The homepage serves as a starting point for web applications.

@@ -10,6 +10,9 @@
 # Static assets (e.g., gallery images)
 /static/gallery/
 
+# persistant data
+/groups/
+
 # IDE configuration
 .vscode
 

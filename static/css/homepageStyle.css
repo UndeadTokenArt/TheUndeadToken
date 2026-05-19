@@ -2,24 +2,24 @@
 
 /* Color variables */
 :root {
-  --blue: #7694a4;
-  --green: #cae390;
-  --dark: #121212;
-  --darker: #1a1a1a;
-  --gray-300: #d1d5db;
-  --gray-400: #9ca3af;
+  --blue: #e68b34;
+  --green: #c56731;
+  --dark: #120d0a;
+  --darker: #504235;
+  --gray-300: #d5c9c6;
+  --gray-400: #b7a8a5;
   --white: #ffffff;
   --black: #000000;
-  --text: #333333;
-  --links: #7694a4;
-  --buttons: #af874c;
-  --buttons-hover: #d4b483;
-  --border: #cfcfcf;
+  --text: #d5c9c6;
+  --links: #e68b34;
+  --buttons: #c56731;
+  --buttons-hover: #e68b34;
+  --border: #504235;
 
-  --parchment: #f7f2e2;
-  --parchment-dark: #d2cec0;
-  --parchment-darker: #7c7a74;
-  --parchment-darkest: #9d9c98;
+  --parchment: #120d0a;
+  --parchment-dark: #504235;
+  --parchment-darker: #8d7f7d;
+  --parchment-darkest: #c56731;
 }
 
 .border-gold {
@@ -100,19 +100,19 @@
 }
 
 [class*="bg-blue/10"] {
-  background-color: rgba(57, 152, 211, 0.1);
+  background-color: rgba(230, 139, 52, 0.1);
 }
 
 [class*="bg-blue/20"] {
-  background-color: rgba(57, 152, 211, 0.2);
+  background-color: rgba(230, 139, 52, 0.2);
 }
 
 [class*="bg-blue/30"] {
-  background-color: rgba(57, 152, 211, 0.3);
+  background-color: rgba(230, 139, 52, 0.3);
 }
 
 [class*="bg-blue/90"] {
-  background-color: rgba(57, 152, 211, 0.9);
+  background-color: rgba(230, 139, 52, 0.9);
 }
 
 [class*="bg-darker/50"] {
@@ -120,31 +120,31 @@
 }
 
 [class*="text-blue/80"] {
-  color: rgba(111, 106, 250, 0.8);
+  color: rgba(230, 139, 52, 0.8);
 }
 
 [class*="text-blue/10"] {
-  color: rgba(34, 27, 255, 0.1);
+  color: rgba(230, 139, 52, 0.1);
 }
 
 [class*="border-blue/10"] {
-  border-color: rgba(34, 27, 255, 0.1);
+  border-color: rgba(230, 139, 52, 0.1);
 }
 
 [class*="border-blue/20"] {
-  border-color: rgba(34, 27, 255, 0.2);
+  border-color: rgba(230, 139, 52, 0.2);
 }
 
 [class*="border-blue/40"] {
-  border-color: rgba(34, 27, 255, 0.4);
+  border-color: rgba(230, 139, 52, 0.4);
 }
 
 [class*="hover:bg-blue/10"]:hover {
-  background-color: rgba(34, 27, 255, 0.1);
+  background-color: rgba(230, 139, 52, 0.1);
 }
 
 [class*="hover:bg-blue/90"]:hover {
-  background-color: rgba(57, 152, 211, 0.9);
+  background-color: rgba(230, 139, 52, 0.9);
 }
 
 [class*="hover:text-blue"]:hover {
@@ -152,7 +152,7 @@
 }
 
 [class*="hover:text-blue/80"]:hover {
-  color: rgba(34, 27, 255, 0.8);
+  color: rgba(230, 139, 52, 0.8);
 }
 
 [class*="hover:scale-105"]:hover {
@@ -189,7 +189,7 @@ body {
 }
 
 .gradient-text {
-  background: linear-gradient(90deg, #393939, #737373);
+  background: linear-gradient(90deg, #c56731, #e68b34);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -218,11 +218,11 @@ body {
 }
 
 .bg-darker {
-  background-color: #1a1a1a;
+  background-color: #504235;
 }
 
 .bg-darker {
-  background-color: #1a1a1a;
+  background-color: #504235;
 }
 
 /* Focus */

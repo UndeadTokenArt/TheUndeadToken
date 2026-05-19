@@ -78,47 +78,74 @@ func registerRoutes(r *gin.Engine) {
 	r.GET("/ws/:code", func(c *gin.Context) {
 		uid := uidFromCookie(c)
 		code := strings.ToUpper(c.Param("code"))
-		g, ok := st.GetGroup(code)
+
+		g, ok := st.GetGroupSnapshot(code)
 		if !ok {
 			c.String(http.StatusNotFound, "group not found")
 			return
 		}
+
 		isDM := g.DMUID == uid
 		conn, err := wsUpgrader.Upgrade(c.Writer, c.Request, nil)
 		if err != nil {
 			return
 		}
-		client := &hub.Client{Conn: conn, UID: uid, IsDM: isDM, Group: code, SendCh: make(chan []byte, 8)}
+
+		client := &hub.Client{
+			Conn:   conn,
+			UID:    uid,
+			IsDM:   isDM,
+			Group:  code,
+			SendCh: make(chan []byte, 16),
+			Done:   make(chan struct{}),
+		}
+
 		hb.AddClient(code, client)
 
-		// writer
+		defer func() {
+			hb.RemoveClient(code, client)
+			close(client.Done)
+			_ = conn.Close()
+		}()
+
 		go func() {
-			for msg := range client.SendCh {
-				_ = conn.WriteMessage(websocket.TextMessage, msg)
+			for {
+				select {
+				case msg := <-client.SendCh:
+					if err := conn.WriteMessage(websocket.TextMessage, msg); err != nil {
+						return
+					}
+				case <-client.Done:
+					return
+				}
 			}
 		}()
 
-		// initial state
 		hb.BroadcastState(code, g)
 
-		// reader
 		for {
 			_, data, err := conn.ReadMessage()
 			if err != nil {
 				break
 			}
-			// Minimal message router
+
 			type Incoming struct {
 				Type string                 `json:"type"`
 				Data map[string]interface{} `json:"data"`
 			}
+
 			var in Incoming
 			if err := json.Unmarshal(data, &in); err != nil {
 				continue
 			}
+
 			switch in.Type {
 			case "ping":
-				conn.WriteMessage(websocket.TextMessage, []byte(`{"type":"pong"}`))
+				select {
+				case client.SendCh <- []byte(`{"type":"pong"}`):
+				default:
+					return
+				}
 			case "addPlayer":
 				name := strings.TrimSpace(getStr(in.Data, "name"))
 				init := getInt(in.Data, "initiative")
@@ -126,14 +153,14 @@ func registerRoutes(r *gin.Engine) {
 				if name == "" {
 					name = "Player"
 				}
-				st.AddPlayer(code, uid, name, init, bonus)
+				_, _, _ = st.AddPlayer(code, uid, name, init, bonus)
 			case "addPlayerRoll":
 				name := strings.TrimSpace(getStr(in.Data, "name"))
 				bonus := getInt(in.Data, "bonus")
 				if name == "" {
 					name = "Player"
 				}
-				st.AddPlayerWithRoll(code, uid, name, bonus)
+				_, _, _ = st.AddPlayerWithRoll(code, uid, name, bonus)
 			case "addMonster":
 				if !isDM {
 					break
@@ -145,33 +172,33 @@ func registerRoutes(r *gin.Engine) {
 				if name == "" {
 					name = "Monster"
 				}
-				st.AddMonster(code, uid, name, hp, bonus, init)
+				_, _, _ = st.AddMonster(code, uid, name, hp, bonus, init)
 			case "damage":
 				if !isDM {
 					break
 				}
 				id := getStr(in.Data, "id")
 				dmg := getInt(in.Data, "dmg")
-				st.DamageMonster(code, uid, id, dmg)
+				_, _ = st.DamageMonster(code, uid, id, dmg)
 			case "reorder":
 				if !isDM {
 					break
 				}
 				order := getStringSlice(in.Data, "order")
-				st.Reorder(code, uid, order)
+				_, _ = st.Reorder(code, uid, order)
 			case "next":
-				st.NextTurn(code)
+				_, _ = st.NextTurn(code)
 			case "reset":
 				if !isDM {
 					break
 				}
-				st.ResetInitiative(code, uid)
+				_, _ = st.ResetInitiative(code, uid)
 			case "deleteEntity":
 				if !isDM {
 					break
 				}
 				entityID := getStr(in.Data, "id")
-				st.DeleteEntity(code, uid, entityID)
+				_, _ = st.DeleteEntity(code, uid, entityID)
 			case "renameEntity":
 				if !isDM {
 					break
@@ -179,7 +206,7 @@ func registerRoutes(r *gin.Engine) {
 				entityID := getStr(in.Data, "id")
 				newName := strings.TrimSpace(getStr(in.Data, "name"))
 				if newName != "" {
-					st.RenameEntity(code, uid, entityID, newName)
+					_, _ = st.RenameEntity(code, uid, entityID, newName)
 				}
 			case "editEntityHP":
 				if !isDM {
@@ -188,7 +215,7 @@ func registerRoutes(r *gin.Engine) {
 				entityID := getStr(in.Data, "id")
 				currentHP := getInt(in.Data, "hp")
 				maxHP := getInt(in.Data, "maxHp")
-				st.EditEntityHP(code, uid, entityID, currentHP, maxHP)
+				_, _ = st.EditEntityHP(code, uid, entityID, currentHP, maxHP)
 			case "addEntityTag":
 				if !isDM {
 					break
@@ -196,7 +223,7 @@ func registerRoutes(r *gin.Engine) {
 				entityID := getStr(in.Data, "id")
 				tag := strings.TrimSpace(getStr(in.Data, "tag"))
 				if tag != "" {
-					st.AddEntityTag(code, uid, entityID, tag)
+					_, _ = st.AddEntityTag(code, uid, entityID, tag)
 				}
 			case "removeEntityTag":
 				if !isDM {
@@ -205,15 +232,15 @@ func registerRoutes(r *gin.Engine) {
 				entityID := getStr(in.Data, "id")
 				tag := strings.TrimSpace(getStr(in.Data, "tag"))
 				if tag != "" {
-					st.RemoveEntityTag(code, uid, entityID, tag)
+					_, _ = st.RemoveEntityTag(code, uid, entityID, tag)
 				}
 			}
-			if g2, ok := st.GetGroup(code); ok {
+
+			g2, ok := st.GetGroupSnapshot(code)
+			if ok {
 				hb.BroadcastState(code, g2)
 			}
 		}
-		hb.RemoveClient(code, client)
-		_ = conn.Close()
 	})
 }
 

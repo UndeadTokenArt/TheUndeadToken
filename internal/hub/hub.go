@@ -16,6 +16,7 @@ type Client struct {
 	IsDM   bool
 	Group  string
 	SendCh chan []byte
+	Done   chan struct{}
 }
 
 type Hub struct {
@@ -49,6 +50,18 @@ func (h *Hub) RemoveClient(group string, c *Client) {
 	}
 }
 
+func (h *Hub) clientSnapshot(group string) []*Client {
+	h.mu.RLock()
+	defer h.mu.RUnlock()
+
+	m := h.clients[group]
+	clients := make([]*Client, 0, len(m))
+	for c := range m {
+		clients = append(clients, c)
+	}
+	return clients
+}
+
 type Outgoing struct {
 	Type string      `json:"type"`
 	Data interface{} `json:"data"`
@@ -56,10 +69,8 @@ type Outgoing struct {
 
 // BroadcastState sends current group state to all clients in the group. DM sees HP, players do not.
 func (h *Hub) BroadcastState(group string, g *models.Group) {
-	h.mu.RLock()
-	clients := h.clients[group]
-	h.mu.RUnlock()
-	for c := range clients {
+	clients := h.clientSnapshot(group)
+	for _, c := range clients {
 		payload := struct {
 			Group   string          `json:"group"`
 			Round   int             `json:"round"`
@@ -82,8 +93,14 @@ func (h *Hub) BroadcastState(group string, g *models.Group) {
 			payload.Entries = sanitized
 		}
 		msg := Outgoing{Type: "state", Data: payload}
-		b, _ := json.Marshal(msg)
+		b, err := json.Marshal(msg)
+		if err != nil {
+			log.Printf("failed to marshal state for group %s: %v", group, err)
+			continue
+		}
 		select {
+		case <-c.Done:
+			continue
 		case c.SendCh <- b:
 		default:
 			log.Println("slow client, dropping")

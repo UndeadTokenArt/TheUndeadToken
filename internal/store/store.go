@@ -22,8 +22,12 @@
 package store
 
 import (
+	"encoding/json"
 	"errors"
+	"log"
 	"math/rand"
+	"os"
+	"path/filepath"
 	"sync"
 	"time"
 
@@ -32,13 +36,72 @@ import (
 	"github.com/undeadtokenart/Homepage/internal/models"
 )
 
+const defaultDataPath = "groups/state.json"
+
+type persistedState struct {
+	Groups map[string]*models.Group `json:"groups"`
+}
+
 type Store struct {
-	mu     sync.RWMutex
-	groups map[string]*models.Group
+	mu       sync.RWMutex
+	groups   map[string]*models.Group
+	dataPath string
 }
 
 func New() *Store {
-	return &Store{groups: make(map[string]*models.Group)}
+	dataPath := os.Getenv("STORE_FILE")
+	if dataPath == "" {
+		dataPath = defaultDataPath
+	}
+
+	s := &Store{groups: make(map[string]*models.Group), dataPath: dataPath}
+	if err := s.loadFromDisk(); err != nil {
+		log.Printf("failed to load store from %s: %v", s.dataPath, err)
+	}
+	return s
+}
+
+func (s *Store) loadFromDisk() error {
+	b, err := os.ReadFile(s.dataPath)
+	if errors.Is(err, os.ErrNotExist) {
+		return nil
+	}
+	if err != nil {
+		return err
+	}
+
+	var state persistedState
+	if err := json.Unmarshal(b, &state); err != nil {
+		return err
+	}
+	if state.Groups == nil {
+		state.Groups = make(map[string]*models.Group)
+	}
+	s.groups = state.Groups
+	return nil
+}
+
+func (s *Store) persistLocked() error {
+	if err := os.MkdirAll(filepath.Dir(s.dataPath), 0o755); err != nil {
+		return err
+	}
+
+	b, err := json.Marshal(persistedState{Groups: s.groups})
+	if err != nil {
+		return err
+	}
+
+	tmp := s.dataPath + ".tmp"
+	if err := os.WriteFile(tmp, b, 0o644); err != nil {
+		return err
+	}
+	return os.Rename(tmp, s.dataPath)
+}
+
+func (s *Store) persistLockedLog() {
+	if err := s.persistLocked(); err != nil {
+		log.Printf("failed to persist store to %s: %v", s.dataPath, err)
+	}
 }
 
 func randomCode() string {
@@ -64,6 +127,7 @@ func (s *Store) CreateOrGetGroup(code, uid string) *models.Group {
 	if g.DMUID == "" {
 		g.DMUID = uid
 	}
+	s.persistLockedLog()
 	return g
 }
 
@@ -72,6 +136,28 @@ func (s *Store) GetGroup(code string) (*models.Group, bool) {
 	defer s.mu.RUnlock()
 	g, ok := s.groups[code]
 	return g, ok
+}
+
+func (s *Store) GetGroupSnapshot(code string) (*models.Group, bool) {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+
+	g, ok := s.groups[code]
+	if !ok {
+		return nil, false
+	}
+
+	clone := *g
+	clone.Entities = make([]models.Entity, len(g.Entities))
+	for i, entity := range g.Entities {
+		entityCopy := entity
+		if entity.Tags != nil {
+			entityCopy.Tags = append([]string(nil), entity.Tags...)
+		}
+		clone.Entities[i] = entityCopy
+	}
+
+	return &clone, true
 }
 
 func (s *Store) AddPlayer(code, uid, name string, initiative, bonus int) (*models.Group, models.Entity, error) {
@@ -87,6 +173,7 @@ func (s *Store) AddPlayer(code, uid, name string, initiative, bonus int) (*model
 	e := models.Entity{ID: uuid.NewString(), Name: name, Type: models.Player, Initiative: initiative, Bonus: bonus, OwnerUID: uid}
 	g.Entities = append(g.Entities, e)
 	g.SortOrder()
+	s.persistLockedLog()
 	return g, e, nil
 }
 
@@ -111,6 +198,7 @@ func (s *Store) AddMonster(code, uid, name string, hp, bonus, initiative int) (*
 	e := models.Entity{ID: uuid.NewString(), Name: name, Type: models.Monster, Initiative: initiative, Bonus: bonus, HP: hp, MaxHP: hp}
 	g.Entities = append(g.Entities, e)
 	g.SortOrder()
+	s.persistLockedLog()
 	return g, e, nil
 }
 
@@ -130,6 +218,7 @@ func (s *Store) DamageMonster(code, uid, entityID string, delta int) (*models.Gr
 			if g.Entities[i].HP < 0 {
 				g.Entities[i].HP = 0
 			}
+			s.persistLockedLog()
 			return g, nil
 		}
 	}
@@ -162,6 +251,7 @@ func (s *Store) Reorder(code, uid string, order []string) (*models.Group, error)
 		newList = append(newList, e)
 	}
 	g.Entities = newList
+	s.persistLockedLog()
 	return g, nil
 }
 
@@ -173,6 +263,7 @@ func (s *Store) NextTurn(code string) (*models.Group, error) {
 		return nil, errors.New("group not found")
 	}
 	g.NextTurn()
+	s.persistLockedLog()
 	return g, nil
 }
 
@@ -190,6 +281,7 @@ func (s *Store) ResetInitiative(code, uid string) (*models.Group, error) {
 	g.Entities = []models.Entity{}
 	g.Round = 1
 	g.TurnIndex = 0
+	s.persistLockedLog()
 	return g, nil
 }
 
@@ -214,6 +306,7 @@ func (s *Store) DeleteEntity(code, uid, entityID string) (*models.Group, error) 
 			} else if g.TurnIndex >= len(g.Entities) && len(g.Entities) > 0 {
 				g.TurnIndex = 0
 			}
+			s.persistLockedLog()
 			return g, nil
 		}
 	}
@@ -234,6 +327,7 @@ func (s *Store) RenameEntity(code, uid, entityID, newName string) (*models.Group
 	for i := range g.Entities {
 		if g.Entities[i].ID == entityID {
 			g.Entities[i].Name = newName
+			s.persistLockedLog()
 			return g, nil
 		}
 	}
@@ -261,6 +355,7 @@ func (s *Store) EditEntityHP(code, uid, entityID string, currentHP, maxHP int) (
 			}
 			g.Entities[i].HP = currentHP
 			g.Entities[i].MaxHP = maxHP
+			s.persistLockedLog()
 			return g, nil
 		}
 	}
@@ -288,6 +383,7 @@ func (s *Store) AddEntityTag(code, uid, entityID, tag string) (*models.Group, er
 			}
 			// Add the new tag
 			g.Entities[i].Tags = append(g.Entities[i].Tags, tag)
+			s.persistLockedLog()
 			return g, nil
 		}
 	}
@@ -311,6 +407,7 @@ func (s *Store) RemoveEntityTag(code, uid, entityID, tag string) (*models.Group,
 			for j, existingTag := range g.Entities[i].Tags {
 				if existingTag == tag {
 					g.Entities[i].Tags = append(g.Entities[i].Tags[:j], g.Entities[i].Tags[j+1:]...)
+					s.persistLockedLog()
 					return g, nil
 				}
 			}

@@ -25,6 +25,12 @@ RUN apk --no-cache add ca-certificates
 # Set the working directory
 WORKDIR /root/
 
+# Default persistent store location (can be overridden).
+ENV STORE_FILE=/groups/state.json
+
+# Ensure persistence directory exists in container filesystem.
+RUN mkdir -p /groups
+
 # Copy the binary from the builder stage
 COPY --from=builder /app/app .
 
@@ -35,6 +41,9 @@ COPY --from=builder /app/config.json ./config.json
 
 # Expose the port your app runs on (adjust if needed)
 EXPOSE 8080
+
+# Mark the persistence directory as a volume.
+VOLUME ["/groups"]
 
 # Command to run the executable
 CMD ["./app"]
